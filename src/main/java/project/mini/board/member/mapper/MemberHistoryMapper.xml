@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.mini.board.member.mapper.MemberHistoryMapper">
+    <insert id="insertMemberHistory" parameterType="member">
+        INSERT INTO member_history
+        (
+          member_id
+        , member_pwd
+        , member_email
+        , member_nick
+        , reg_member
+        , reg_date
+        , admin_yn
+        )
+        VALUES
+        (
+          #{id}
+        , #{password}
+        , #{email}
+        , #{nick}
+        , #{id}
+        , NOW()
+        , 'N'
+        )
+    </insert>
+</mapper>
