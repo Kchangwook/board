@@ -1,10 +1,12 @@
 package project.mini.board.member.model;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 @Alias("member")
+@Getter
 @NoArgsConstructor
 public class Member {
     private String id;
@@ -18,5 +20,9 @@ public class Member {
         this.password = password;
         this.email = email;
         this.nick = nick;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
