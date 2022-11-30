@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+  lang="en"
+  class="light-style customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="/assets/"
+  data-template="vertical-menu-template-free"
+>
+<head th:replace="/common/header"></head>
+<body>
+    <!-- Content -->
+
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <!-- Register Card -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="/" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <svg th:replace="/common/logo"></svg>
+                  </span>
+                  <span class="app-brand-text demo text-body fw-bolder text-no-transform">Board</span>
+                </a>
+              </div>
+              <h4 class="mb-2">Join Board Member 🚀</h4>
+              <form class="mt-4">
+                <div class="mb-3">
+                  <label for="username" class="form-label">아이디</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="아이디를 입력하세요" autofocus/>
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">이메일</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">닉네임</label>
+                  <input type="text" class="form-control" id="nick" name="email" placeholder="닉네임을 입력하세요" />
+                </div>
+                <div class="mb-3 form-password-toggle">
+                  <label class="form-label" for="password">비밀번호</label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" id="password" class="form-control" name="password" aria-describedby="password"/>
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <div class="mb-3 form-password-toggle">
+                  <label class="form-label" for="password">비밀번호 확인</label>
+                  <div class="input-group input-group-merge">
+                    <input type="password" id="passwordCheck" class="form-control" name="password" aria-describedby="password"/>
+                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                  </div>
+                </div>
+                <button class="btn btn-primary d-grid w-100">회원 가입</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <th:block th:insert="/common/footer.html"></th:block>
+  </body>
+</html>
