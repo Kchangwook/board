@@ -27,4 +27,12 @@
         , NOW()
         )
     </insert>
+
+    <select id="selectMemberById" parameterType="string" resultType="member">
+        SELECT member_id
+             , member_email
+             , member_nick
+          FROM member
+         WHERE member_id = #{memberId}
+    </select>
 </mapper>

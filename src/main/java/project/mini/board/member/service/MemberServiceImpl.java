@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.insertMember(member);
 		memberHistoryService.addMemberHistory(member);
 	}
+
+	@Override
+	public Member getMemberById(String memberId) {
+		return memberMapper.selectMemberById(memberId);
+	}
 }

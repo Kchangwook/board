@@ -1,10 +1,10 @@
 package project.mini.board.member.controller.api;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,5 +62,32 @@ public class MemberApiControllerTest {
 		resultActions.andExpect(status().isOk());
 
 		verify(memberService, times(1)).addMember(any(Member.class));
+	}
+
+	@Test
+	@DisplayName("중복 체크 API 테스트")
+	public void checkDuplicateMemberTest() throws Exception {
+		//given
+		String memberId = "id";
+		Member member = Member.builder()
+			.id("id")
+			.password("password")
+			.email("email")
+			.nick("nick")
+			.build();
+
+		when(memberService.getMemberById(anyString())).thenReturn(member);
+
+		//when
+		ResultActions resultActions = mockMvc.perform(get("/api/member/duplicate-check?memberId=" + memberId));
+
+		//then
+		resultActions.andExpect(status().isOk());
+
+		String resultString = resultActions.andReturn().getResponse()
+				.getContentAsString();
+		assertEquals(resultString, "true");
+
+		verify(memberService, times(1)).getMemberById(anyString());
 	}
 }
