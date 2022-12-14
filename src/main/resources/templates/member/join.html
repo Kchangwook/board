@@ -13,67 +13,115 @@
  -->
 <!-- beautify ignore:start -->
 <html
-  lang="en"
-  class="light-style customizer-hide"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="/assets/"
-  data-template="vertical-menu-template-free"
+        lang="en"
+        class="light-style customizer-hide"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/assets/"
+        data-template="vertical-menu-template-free"
 >
 <head th:replace="/common/header"></head>
 <body>
-    <!-- Content -->
-
-    <div class="container-xxl">
-      <div class="authentication-wrapper authentication-basic container-p-y">
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
-          <!-- Register Card -->
-          <div class="card">
-            <div class="card-body">
-              <!-- Logo -->
-              <div class="app-brand justify-content-center">
-                <a href="/" class="app-brand-link gap-2">
-                  <span class="app-brand-logo demo">
-                    <svg th:replace="/common/logo"></svg>
-                  </span>
-                  <span class="app-brand-text demo text-body fw-bolder text-no-transform">Board</span>
-                </a>
-              </div>
-              <h4 class="mb-2">Join Board Member 🚀</h4>
-              <form class="mt-4">
-                <div class="mb-3">
-                  <label for="username" class="form-label">아이디</label>
-                  <input type="text" class="form-control" id="username" name="username" placeholder="아이디를 입력하세요" autofocus/>
+            <!-- Register Card -->
+            <div class="card">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="/" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                                <svg th:replace="/common/logo"></svg>
+                            </span>
+                            <span class="app-brand-text demo text-body fw-bolder text-no-transform">Board</span>
+                        </a>
+                    </div>
+                    <h4 class="mb-2">Join Board Member 🚀</h4>
+                    <form id="member_join_form" class="mt-4" onsubmit="return false;">
+                        <div class="mb-3">
+                            <label for="member_id" class="form-label">아이디</label>
+                            <input type="text" class="form-control" id="member_id" name="id" placeholder="아이디를 입력하세요" min="5" max="30" autofocus/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="member_email" class="form-label">이메일</label>
+                            <input type="email" class="form-control" id="member_email" name="email" placeholder="이메일을 입력하세요"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="member_nick" class="form-label">닉네임</label>
+                            <input type="text" class="form-control" id="member_nick" name="nick" placeholder="닉네임을 입력하세요" max="20"/>
+                        </div>
+                        <div class="mb-3 form-password-toggle">
+                            <label class="form-label" for="member_password">비밀번호</label>
+                            <div class="input-group input-group-merge">
+                                <input type="password" id="member_password" class="form-control" name="password" aria-describedby="password" max="20"/>
+                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 form-password-toggle">
+                            <label class="form-label" for="member_password_confirm">비밀번호 확인</label>
+                            <div class="input-group input-group-merge">
+                                <input type="password" id="member_password_confirm" class="form-control" aria-describedby="password" max="20"/>
+                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                            </div>
+                        </div>
+                        <div id="password_confirm_alert" class="alert alert-danger" role="alert" style="display: none">
+                            비밀번호가 일치하지 않습니다. 확인해주세요.
+                        </div>
+                        <button id="join_button" class="btn btn-primary d-grid w-100">회원 가입</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">이메일</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" />
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">닉네임</label>
-                  <input type="text" class="form-control" id="nick" name="email" placeholder="닉네임을 입력하세요" />
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">비밀번호</label>
-                  <div class="input-group input-group-merge">
-                    <input type="password" id="password" class="form-control" name="password" aria-describedby="password"/>
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">비밀번호 확인</label>
-                  <div class="input-group input-group-merge">
-                    <input type="password" id="passwordCheck" class="form-control" name="password" aria-describedby="password"/>
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <button class="btn btn-primary d-grid w-100">회원 가입</button>
-              </form>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-    <th:block th:insert="/common/footer.html"></th:block>
-  </body>
+</div>
+<th:block th:insert="/common/footer.html"></th:block>
+<script>
+    $(document).ready(function () {
+        memberJoin.initialize();
+    });
+
+    const memberJoin = {
+        initialize () {
+            this.bindPasswordCheckInputEvent();
+            this.bindJoinButtonClickEvent();
+        },
+        bindPasswordCheckInputEvent () {
+            $('#member_password_confirm').on('input', function () {
+                if (memberValidator.isPassWordConfirmed()) {
+                    $('#password_confirm_alert').hide();
+                } else {
+                    $('#password_confirm_alert').show();
+                }
+            });
+        },
+        bindJoinButtonClickEvent () {
+            $('#member_join_form').on('submit', function () {
+                if (memberValidator.isPassWordConfirmed() === false) {
+                    alert('비밀번호를 확인해주세요.');
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '/api/member',
+                    data: $('#member_join_form').serialize(),
+                    success: function () {
+                        alert('회원가입이 완료되었습니다.');
+                    },
+                    error: function () {
+                        alert('오류가 발생했습니다.');
+                    }
+                });
+            });
+        }
+    };
+
+    const memberValidator = {
+        isPassWordConfirmed () {
+            return $('#member_password_confirm').val() === $('#member_password').val();
+        }
+    };
+</script>
+</body>
 </html>

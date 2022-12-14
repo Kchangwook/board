@@ -3,10 +3,13 @@ package project.mini.board.member.model;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("member")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Member {
     private String id;
