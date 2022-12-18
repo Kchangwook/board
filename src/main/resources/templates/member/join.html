@@ -98,7 +98,7 @@
         bindJoinButtonClickEvent () {
             $('#member_join_form').on('submit', function () {
                 if (memberValidator.isPassWordConfirmed() === false) {
-                    alert('비밀번호를 확인해주세요.');
+                    sweetAlert.errorAlert('비밀번호를 확인해주세요');
                     return;
                 }
 
@@ -107,10 +107,10 @@
                     url: '/api/member',
                     data: $('#member_join_form').serialize(),
                     success: function () {
-                        alert('회원가입이 완료되었습니다.');
+                        sweetAlert.successAlert('회원가입이 완료되었습니다');
                     },
                     error: function () {
-                        alert('오류가 발생했습니다.');
+                        sweetAlert.errorAlert('오류가 발생했습니다');
                     }
                 });
             });
