@@ -5,6 +5,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import javax.servlet.http.Cookie;
+
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +31,9 @@ public class MemberApiControllerTest {
 	@Mock
 	private MemberService memberService;
 
+	@Mock
+	private ObjectMapper injectObjectMapper;
+
 	@InjectMocks
 	private MemberApiController memberApiController;
 
@@ -40,6 +47,8 @@ public class MemberApiControllerTest {
 			.build();
 
 		objectMapper = new ObjectMapper();
+
+		ReflectionTestUtils.setField(memberApiController, "memberLoginEncryptKey", "projectminiboardmemberloginkey!@");
 	}
 
 	@Test
@@ -87,6 +96,42 @@ public class MemberApiControllerTest {
 		String resultString = resultActions.andReturn().getResponse()
 				.getContentAsString();
 		assertEquals(resultString, "true");
+
+		verify(memberService, times(1)).getMemberById(anyString());
+	}
+
+	@Test
+	@DisplayName("로그인 테스트")
+	public void loginTest() throws Exception {
+		//given
+		String cookieValue = "cookieValue";
+
+		Member loginFormMember = Member.builder()
+			.id("id")
+			.password("password")
+			.build();
+
+		Member member = Member.builder()
+			.id("id")
+			.password(DigestUtils.sha3_256Hex("password"))
+			.email("email")
+			.nick("nick")
+			.build();
+
+		when(memberService.getMemberById(anyString())).thenReturn(member);
+		when(injectObjectMapper.writeValueAsString(any(Member.class))).thenReturn(cookieValue);
+
+		//when
+		ResultActions resultActions = mockMvc.perform(post("/api/member/login")
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.content(objectMapper.writeValueAsString(loginFormMember)));
+
+		//then
+		resultActions.andExpect(status().isOk());
+
+		Cookie resultCookie = resultActions.andReturn().getResponse()
+				.getCookie("loginMember");
+		assertNotNull(resultCookie);
 
 		verify(memberService, times(1)).getMemberById(anyString());
 	}
