@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,10 +47,10 @@ public class MemberApiController {
 	}
 
 	@PostMapping("/login")
-	public void login(HttpServletResponse response,  @RequestBody Member member) throws Exception {
+	public void login(HttpServletResponse response,  @ModelAttribute Member member) throws Exception {
 		Member savedMember = memberService.getMemberById(member.getId());
 		if (isNotSavedMember(savedMember, member)) {
-			return;
+			throw new NotFoundException("존재하지 않는 회원입니다");
 		}
 
 		response.addCookie(createLoginMemberCookie(member));
