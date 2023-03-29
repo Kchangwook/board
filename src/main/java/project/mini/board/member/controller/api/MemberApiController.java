@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,5 +71,10 @@ public class MemberApiController {
 		cookie.setPath(BASE_PATH);
 		cookie.setMaxAge(MINUTES_30);
 		return cookie;
+	}
+
+	@PutMapping
+	public void modifyMember(Member member) {
+		memberService.modifyMember(member);
 	}
 }

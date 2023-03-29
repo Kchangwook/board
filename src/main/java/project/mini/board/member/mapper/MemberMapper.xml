@@ -34,4 +34,20 @@
           FROM member
          WHERE member_id = #{memberId}
     </select>
+
+    <update id="updateMember" parameterType="map">
+        UPDATE member
+           SET mod_member = #{id}
+             , mod_datetime = NOW()
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(password)">
+             , member_pwd = #{password}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(email)">
+             , member_email = #{email}
+        </if>
+        <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(nick)">
+             , member_nick = #{nick}
+        </if>
+         WHERE member_id = #{id}
+    </update>
 </mapper>

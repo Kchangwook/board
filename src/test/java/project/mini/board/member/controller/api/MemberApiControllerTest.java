@@ -106,11 +106,6 @@ public class MemberApiControllerTest {
 		//given
 		String cookieValue = "cookieValue";
 
-		Member loginFormMember = Member.builder()
-			.id("id")
-			.password("password")
-			.build();
-
 		Member member = Member.builder()
 			.id("id")
 			.password(DigestUtils.sha3_256Hex("password"))
@@ -123,8 +118,8 @@ public class MemberApiControllerTest {
 
 		//when
 		ResultActions resultActions = mockMvc.perform(post("/api/member/login")
-			.contentType(MediaType.APPLICATION_JSON_VALUE)
-			.content(objectMapper.writeValueAsString(loginFormMember)));
+			.param("id", "id")
+			.param("password", "password"));
 
 		//then
 		resultActions.andExpect(status().isOk());
@@ -134,5 +129,27 @@ public class MemberApiControllerTest {
 		assertNotNull(resultCookie);
 
 		verify(memberService, times(1)).getMemberById(anyString());
+	}
+
+	@Test
+	@DisplayName("회원 정보 수정 테스트")
+	public void modifyMemberTest() throws Exception {
+		//given
+		Member member = Member.builder()
+			.id("id")
+			.password(DigestUtils.sha3_256Hex("password"))
+			.email("email")
+			.nick("nick")
+			.build();
+
+		//when
+		ResultActions resultActions = mockMvc.perform(put("/api/member")
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.content(objectMapper.writeValueAsString(member)));
+
+		//then
+		resultActions.andExpect(status().isOk());
+
+		verify(memberService, times(1)).modifyMember(any(Member.class));
 	}
 }
