@@ -77,4 +77,9 @@ public class MemberApiController {
 	public void modifyMember(Member member) {
 		memberService.modifyMember(member);
 	}
+
+	@PutMapping("/password")
+	public boolean modifyMemberPassword(Member member) {
+		return memberService.modifyMemberPassword(member);
+	}
 }

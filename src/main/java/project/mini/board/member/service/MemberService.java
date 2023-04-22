@@ -8,4 +8,6 @@ public interface MemberService {
 	Member getMemberById(String memberId);
 
 	void modifyMember(Member member);
+
+	boolean modifyMemberPassword(Member member);
 }

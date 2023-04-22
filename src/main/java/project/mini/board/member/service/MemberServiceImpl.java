@@ -30,12 +30,23 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void modifyMember(Member member) {
-		if (StringUtils.isNotBlank(member.getPassword())) {
-			String encodedPassword = DigestUtils.sha3_256Hex(member.getPassword());
-			member.setPassword(encodedPassword);
-		}
-
 		memberMapper.updateMember(member);
 		memberHistoryService.addMemberHistory(member);
+	}
+
+	@Override
+	public boolean modifyMemberPassword(Member member) {
+		Member targetMember = getMemberById(member.getId());
+		String encodedInputCurrentPassword = DigestUtils.sha3_256Hex(member.getPassword());
+
+		if (StringUtils.equals(targetMember.getPassword(), encodedInputCurrentPassword) == false) {
+			return false;
+		}
+
+		String encodedNewPassword = DigestUtils.sha3_256Hex(member.getPassword());
+		member.setPassword(encodedNewPassword);
+
+		modifyMember(member);
+		return true;
 	}
 }

@@ -14,13 +14,15 @@ import org.apache.ibatis.type.Alias;
 public class Member {
     private String id;
     private String password;
+    private String newPassword;
     private String email;
     private String nick;
 
     @Builder
-    public Member(String id, String password, String email, String nick) {
+    public Member(String id, String password, String newPassword, String email, String nick) {
         this.id = id;
         this.password = password;
+        this.newPassword = newPassword;
         this.email = email;
         this.nick = nick;
     }

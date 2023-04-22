@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -151,5 +152,33 @@ public class MemberApiControllerTest {
 		resultActions.andExpect(status().isOk());
 
 		verify(memberService, times(1)).modifyMember(any(Member.class));
+	}
+
+	@Test
+	@DisplayName("회원 비밀번호 수정 테스트")
+	public void modifyMemberPasswordTest() throws Exception {
+		//given
+		Member member = Member.builder()
+			.id("id")
+			.password("password")
+			.newPassword("newPassword")
+			.email("email")
+			.nick("nick")
+			.build();
+
+		when(memberService.modifyMemberPassword(any(Member.class))).thenReturn(true);
+
+		//when
+		ResultActions resultActions = mockMvc.perform(put("/api/member/password")
+			.contentType(MediaType.APPLICATION_JSON_VALUE)
+			.content(objectMapper.writeValueAsString(member)));
+
+		//then
+		resultActions.andExpect(status().isOk());
+		MockHttpServletResponse mockResponse = resultActions.andReturn()
+				.getResponse();
+
+		assertEquals(mockResponse.getContentAsString(), "true");
+		verify(memberService, times(1)).modifyMemberPassword(any(Member.class));
 	}
 }
