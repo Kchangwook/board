@@ -41,13 +41,13 @@
                   type="text"
                   id="email"
                   name="email"
-                  value="john.doe@example.com"
+                  th:value="${loginMember.email}"
                   placeholder="john.doe@example.com"
           />
         </div>
         <div class="mb-3 col-md-6">
           <label for="lastName" class="form-label">닉네임</label>
-          <input class="form-control" type="text" name="lastName" id="lastName" value="Doe"/>
+          <input class="form-control" type="text" name="lastName" id="lastName" th:value="${loginMember.nick}"/>
         </div>
       </div>
       <div class="mt-2">

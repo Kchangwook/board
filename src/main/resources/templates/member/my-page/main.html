@@ -136,19 +136,16 @@
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
-            <!-- Content -->
-
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4">회원 정보 수정</h4>
-
               <div class="row">
                 <div class="col-md-12">
                   <ul class="nav nav-pills flex-column flex-md-row mb-3">
                     <li class="nav-item">
-                      <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>계정 정보 수정</a>
+                      <a class="nav-link active my-page-link" href="javascript:void(0);" data-my_page_type="account"><i class="bx bx-user me-1"></i>계정 정보 수정</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="javascript:void(0);"><i class="bx bx-key me-1"></i>비밀번호 수정</a>
+                      <a class="nav-link my-page-link" href="javascript:void(0);" data-my_page_type="password"><i class="bx bx-key me-1"></i>비밀번호 수정</a>
                     </li>
                   </ul>
                   <div id="my_page_content">
@@ -209,12 +206,22 @@
 
     const myPage = {
       init () {
-        myPage.getContentPage();
+        myPage.getContentPage('account');
+        myPage.bindMyPageLinkClickEvent();
       },
-      getContentPage () {
+      bindMyPageLinkClickEvent () {
+        $(document).on('click', '.my-page-link', function (event) {
+          $('.my-page-link').removeClass('active');
+          $(event.target).addClass('active');
+
+          const myPageType = $(event.target).data('my_page_type');
+          myPage.getContentPage(myPageType);
+        });
+      },
+      getContentPage (type) {
         $.ajax({
           type: 'get',
-          url: '/member/account',
+          url: `/member/${type}`,
           success: function (view) {
             $('#my_page_content').html(view);
           }

@@ -21,7 +21,7 @@ public class Aes256Util {
 		return Base64.getEncoder().encodeToString(encrypted);
 	}
 
-	public String decrypt(String key, String cipherText) throws Exception {
+	public static String decrypt(String key, String cipherText) throws Exception {
 		Cipher cipher = Cipher.getInstance(CIPHER_TYPE);
 		SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), ALGORITHM);
 		IvParameterSpec ivParamSpec = new IvParameterSpec(key.substring(0, 16).getBytes());

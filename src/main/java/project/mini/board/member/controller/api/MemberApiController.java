@@ -32,7 +32,6 @@ public class MemberApiController {
 	private static final String BASE_PATH = "/";
 
 	private final MemberService memberService;
-	private final ObjectMapper objectMapper;
 
 	@Value("${aes256.encrypt-key.member-login}")
 	private String memberLoginEncryptKey;
@@ -66,7 +65,7 @@ public class MemberApiController {
 	}
 
 	private Cookie createLoginMemberCookie(Member member) throws Exception {
-		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(memberLoginEncryptKey, objectMapper.writeValueAsString(member)));
+		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(memberLoginEncryptKey, member.getId()));
 		cookie.setHttpOnly(true);
 		cookie.setPath(BASE_PATH);
 		cookie.setMaxAge(MINUTES_30);

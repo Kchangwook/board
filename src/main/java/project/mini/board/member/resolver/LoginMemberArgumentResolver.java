@@ -6,7 +6,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -18,13 +20,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import project.mini.board.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
+import project.mini.board.member.model.Member;
 import project.mini.board.member.service.MemberService;
+import project.mini.board.util.Aes256Util;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 	private final MemberService memberService;
+
+	@Value("${aes256.encrypt-key.member-login}")
+	private String memberLoginEncryptKey;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -34,17 +41,18 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
-		String loginMemberId = Arrays.stream(httpServletRequest.getCookies())
+		String encryptedMember = Arrays.stream(httpServletRequest.getCookies())
 			.filter(cookie -> StringUtils.equals(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, cookie.getName()))
 			.findFirst()
 			.map(Cookie::getValue)
 			.orElse(StringUtils.EMPTY);
 
-		if (StringUtils.equals(loginMemberId, StringUtils.EMPTY)) {
+		if (StringUtils.equals(encryptedMember, StringUtils.EMPTY)) {
 			log.error("{} path는 로그인이 필요합니다.", httpServletRequest.getPathInfo());
 			throw new IllegalAccessException();
 		}
 
+		String loginMemberId = Aes256Util.decrypt(memberLoginEncryptKey, encryptedMember);
 		return memberService.getMemberById(loginMemberId);
 	}
 }
