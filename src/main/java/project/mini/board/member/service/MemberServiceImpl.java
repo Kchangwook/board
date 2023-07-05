@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
 		Member targetMember = getMemberById(member.getId());
 		String encodedInputCurrentPassword = DigestUtils.sha3_256Hex(member.getPassword());
 
-		if (StringUtils.equals(targetMember.getPassword(), encodedInputCurrentPassword) == false) {
+		if (StringUtils.equals(targetMember.getPassword(), encodedInputCurrentPassword)) {
 			return false;
 		}
 

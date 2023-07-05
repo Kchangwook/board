@@ -32,7 +32,7 @@
   </div>
   <hr class="my-0" />
   <div class="card-body">
-    <form id="formAccountSettings" method="POST" onsubmit="return false">
+    <form id="update_account_form" method="POST" onsubmit="return false">
       <div class="row">
         <div class="mb-3 col-md-6">
           <label for="email" class="form-label">이메일</label>
@@ -46,17 +46,16 @@
           />
         </div>
         <div class="mb-3 col-md-6">
-          <label for="lastName" class="form-label">닉네임</label>
-          <input class="form-control" type="text" name="lastName" id="lastName" th:value="${loginMember.nick}"/>
+          <label for="nick" class="form-label">닉네임</label>
+          <input class="form-control" type="text" name="nick" id="nick" th:value="${loginMember.nick}" placeholder="닉네임을 입력하세요" max="20"/>
         </div>
       </div>
       <div class="mt-2">
-        <button type="submit" class="btn btn-primary me-2">프로필 수정</button>
+        <button type="submit" class="btn btn-primary me-2" id="account_update_button">프로필 수정</button>
         <button type="reset" class="btn btn-outline-secondary">취소</button>
       </div>
     </form>
   </div>
-  <!-- /Account -->
 </div>
 <div class="card">
   <h5 class="card-header">계정 삭제</h5>

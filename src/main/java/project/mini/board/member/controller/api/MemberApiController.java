@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import project.mini.board.constant.MemberConstant;
+import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.model.Member;
 import project.mini.board.member.service.MemberService;
 import project.mini.board.util.Aes256Util;
@@ -50,7 +51,7 @@ public class MemberApiController {
 	public void login(HttpServletResponse response,  @ModelAttribute Member member) throws Exception {
 		Member savedMember = memberService.getMemberById(member.getId());
 		if (isNotSavedMember(savedMember, member)) {
-			throw new NotFoundException("존재하지 않는 회원입니다");
+			throw new NotFoundException("회원 정보가 일치하지 않습니다.");
 		}
 
 		response.addCookie(createLoginMemberCookie(member));
@@ -73,12 +74,14 @@ public class MemberApiController {
 	}
 
 	@PutMapping
-	public void modifyMember(Member member) {
+	public void modifyMember(@ModelAttribute Member member, @LoginMember Member loginMember) {
+		member.setId(loginMember.getId());
 		memberService.modifyMember(member);
 	}
 
 	@PutMapping("/password")
-	public boolean modifyMemberPassword(Member member) {
+	public boolean modifyMemberPassword(@ModelAttribute Member member, @LoginMember Member loginMember) {
+		member.setId(loginMember.getId());
 		return memberService.modifyMemberPassword(member);
 	}
 }

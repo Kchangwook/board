@@ -32,9 +32,6 @@ public class MemberApiControllerTest {
 	@Mock
 	private MemberService memberService;
 
-	@Mock
-	private ObjectMapper injectObjectMapper;
-
 	@InjectMocks
 	private MemberApiController memberApiController;
 
@@ -115,7 +112,6 @@ public class MemberApiControllerTest {
 			.build();
 
 		when(memberService.getMemberById(anyString())).thenReturn(member);
-		when(injectObjectMapper.writeValueAsString(any(Member.class))).thenReturn(cookieValue);
 
 		//when
 		ResultActions resultActions = mockMvc.perform(post("/api/member/login")
