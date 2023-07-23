@@ -12,3 +12,7 @@ server:
 aes256:
   encrypt-key:
     member-login: projectminiboardmemberloginkey!@
+    attach-file: projectminiboardattachfilekey!@#
+
+file:
+  save-base-dir: /Users/kchangwook/Documents/

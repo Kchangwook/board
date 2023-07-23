@@ -65,7 +65,7 @@ public class MemberApiController {
 			|| StringUtils.equals(savedMember.getPassword(), encodedPassword) == false;
 	}
 
-	private Cookie createLoginMemberCookie(Member member) throws Exception {
+	private Cookie createLoginMemberCookie(Member member) {
 		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(memberLoginEncryptKey, member.getId()));
 		cookie.setHttpOnly(true);
 		cookie.setPath(BASE_PATH);
