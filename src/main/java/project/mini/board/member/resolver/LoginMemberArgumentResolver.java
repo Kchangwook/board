@@ -18,6 +18,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import project.mini.board.constant.AesKey;
 import project.mini.board.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.model.Member;
@@ -29,9 +30,6 @@ import project.mini.board.util.Aes256Util;
 @Component
 public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolver {
 	private final MemberService memberService;
-
-	@Value("${aes256.encrypt-key.member-login}")
-	private String memberLoginEncryptKey;
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -52,7 +50,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 			throw new IllegalAccessException();
 		}
 
-		String loginMemberId = Aes256Util.decrypt(memberLoginEncryptKey, encryptedMember);
+		String loginMemberId = Aes256Util.decrypt(AesKey.MEMBER_LOGIN, encryptedMember);
 		return memberService.getMemberById(loginMemberId);
 	}
 }

@@ -21,7 +21,8 @@ public class MemberController {
 	}
 
 	@GetMapping("my-page")
-	public String getMyPageView() {
+	public String getMyPageView(Model model, @LoginMember Member member) {
+		model.addAttribute("loginMember", member);
 		return "/member/my-page/main";
 	}
 

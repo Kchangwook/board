@@ -45,8 +45,6 @@ public class MemberApiControllerTest {
 			.build();
 
 		objectMapper = new ObjectMapper();
-
-		ReflectionTestUtils.setField(memberApiController, "memberLoginEncryptKey", "projectminiboardmemberloginkey!@");
 	}
 
 	@Test

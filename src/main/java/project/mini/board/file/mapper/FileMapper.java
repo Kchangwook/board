@@ -7,4 +7,6 @@ import project.mini.board.member.model.Member;
 @Mapper
 public interface FileMapper {
     void insertAttachFile(AttachFile attachFile, Member loginMember);
+
+    AttachFile selectAttachFile(int fileId);
 }

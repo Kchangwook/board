@@ -1,6 +1,7 @@
 package project.mini.board.util;
 
 import lombok.extern.slf4j.Slf4j;
+import project.mini.board.constant.AesKey;
 import project.mini.board.exception.CipherException;
 
 import java.nio.charset.StandardCharsets;
@@ -15,11 +16,12 @@ public class Aes256Util {
 	private static final String CIPHER_TYPE = "AES/CBC/PKCS5Padding";
 	private static final String ALGORITHM = "AES";
 
-	public static String encrypt(String key, String text) {
+	public static String encrypt(AesKey key, String text) {
 		try {
+			String keyString = key.getKeyString();
 			Cipher cipher = Cipher.getInstance(CIPHER_TYPE);
-			SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), ALGORITHM);
-			IvParameterSpec ivParamSpec = new IvParameterSpec(key.substring(0, 16).getBytes());
+			SecretKeySpec keySpec = new SecretKeySpec(keyString.getBytes(), ALGORITHM);
+			IvParameterSpec ivParamSpec = new IvParameterSpec(keyString.substring(0, 16).getBytes());
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
 
 			byte[] encrypted = cipher.doFinal(text.getBytes(StandardCharsets.UTF_8.name()));
@@ -30,11 +32,12 @@ public class Aes256Util {
 		}
 	}
 
-	public static String decrypt(String key, String cipherText) {
+	public static String decrypt(AesKey key, String cipherText) {
 		try {
+			String keyString = key.getKeyString();
 			Cipher cipher = Cipher.getInstance(CIPHER_TYPE);
-			SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), ALGORITHM);
-			IvParameterSpec ivParamSpec = new IvParameterSpec(key.substring(0, 16).getBytes());
+			SecretKeySpec keySpec = new SecretKeySpec(keyString.getBytes(), ALGORITHM);
+			IvParameterSpec ivParamSpec = new IvParameterSpec(keyString.substring(0, 16).getBytes());
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
 
 			byte[] decodedBytes = Base64.getDecoder().decode(cipherText);

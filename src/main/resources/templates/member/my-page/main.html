@@ -149,6 +149,7 @@
                     </li>
                   </ul>
                   <div id="my_page_content">
+                    <div th:insert="/member/my-page/update-account.html"></div>
                   </div>
                 </div>
               </div>
@@ -205,13 +206,12 @@
     });
 
     const myPage = {
-      init () {
-        myPage.getContentPage('account');
+      init() {
         myPage.bindMyPageLinkClickEvent();
-        myPage.bindUpdateAccountButtonClickEvent();
+        updateAccount.bindEvents();
         myPage.bindUpdatePasswordButtonClickEvent();
       },
-      bindMyPageLinkClickEvent () {
+      bindMyPageLinkClickEvent() {
         $(document).on('click', '.my-page-link', function (event) {
           $('.my-page-link').removeClass('active');
           $(event.target).addClass('active');
@@ -220,7 +220,7 @@
           myPage.getContentPage(myPageType);
         });
       },
-      getContentPage (type) {
+      getContentPage(type) {
         $.ajax({
           type: 'get',
           url: `/member/${type}`,
@@ -229,22 +229,7 @@
           }
         });
       },
-      bindUpdateAccountButtonClickEvent () {
-        $(document).on('click', '#account_update_button', function () {
-          $.ajax({
-            type: 'put',
-            url: '/api/member',
-            data: $('#update_account_form').serialize(),
-            success: function () {
-              sweetAlert.successAlert('회원 정보가 수정되었습니다.');
-            },
-            error: function () {
-              sweetAlert.errorAlert('회원 정보 수정에 실패했습니다.');
-            }
-          });
-        });
-      },
-      bindUpdatePasswordButtonClickEvent () {
+      bindUpdatePasswordButtonClickEvent() {
         $(document).on('click', '#update_password_button', function () {
           if ($('#member_password').val() !== $('#member_password_confirm').val()) {
             sweetAlert.errorAlert('비밀번호를 체크해주세요.');

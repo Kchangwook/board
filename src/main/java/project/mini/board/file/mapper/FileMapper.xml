@@ -14,17 +14,23 @@
         )
         VALUES
         (
-          #{file.fileName}
-        , #{file.fileExtension}
-        , #{file.fileUsage}
-        , #{file.fileSavePath}
-        , #{member.id}
+          #{attachFile.fileName}
+        , #{attachFile.fileExtension}
+        , #{attachFile.fileSavePath}
+        , #{loginMember.id}
         , NOW()
-        , #{member.id}
+        , #{loginMember.id}
         , NOW()
         )
-        <selectKey order="AFTER" keyProperty="fileId">
+        <selectKey order="AFTER" keyProperty="attachFile.fileId" resultType="int">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="selectAttachFile" parameterType="int" resultType="file">
+        SELECT file_id AS fileId
+             , file_save_path AS fileSavePath
+          FROM file
+         WHERE file_id = #{fileId}
+    </select>
 </mapper>

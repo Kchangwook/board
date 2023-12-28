@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import project.mini.board.constant.AesKey;
 import project.mini.board.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.model.Member;
@@ -33,9 +34,6 @@ public class MemberApiController {
 	private static final String BASE_PATH = "/";
 
 	private final MemberService memberService;
-
-	@Value("${aes256.encrypt-key.member-login}")
-	private String memberLoginEncryptKey;
 
 	@PostMapping
 	public void addMember(@ModelAttribute Member member) {
@@ -66,7 +64,7 @@ public class MemberApiController {
 	}
 
 	private Cookie createLoginMemberCookie(Member member) {
-		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(memberLoginEncryptKey, member.getId()));
+		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(AesKey.MEMBER_LOGIN, member.getId()));
 		cookie.setHttpOnly(true);
 		cookie.setPath(BASE_PATH);
 		cookie.setMaxAge(MINUTES_30);
@@ -74,9 +72,12 @@ public class MemberApiController {
 	}
 
 	@PutMapping
-	public void modifyMember(@ModelAttribute Member member, @LoginMember Member loginMember) {
+	public void modifyMember(@ModelAttribute Member member, @LoginMember Member loginMember, HttpServletResponse httpServletResponse) {
 		member.setId(loginMember.getId());
 		memberService.modifyMember(member);
+
+		Member modifiedMember = memberService.getMemberById(loginMember.getId());
+		httpServletResponse.addCookie(createLoginMemberCookie(modifiedMember));
 	}
 
 	@PutMapping("/password")

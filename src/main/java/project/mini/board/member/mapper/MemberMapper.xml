@@ -31,6 +31,7 @@
              , member_pwd AS password
              , member_email AS email
              , member_nick AS nick
+             , ( SELECT file_id FROM file WHERE file_usage_id = member.member_id AND file_usage_type = 'IMAGE' ) AS profileImageId
           FROM member
          WHERE member_id = #{memberId}
     </select>
