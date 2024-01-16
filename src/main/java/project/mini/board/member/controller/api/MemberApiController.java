@@ -6,17 +6,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import project.mini.board.constant.AesKey;
@@ -24,7 +20,7 @@ import project.mini.board.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.model.Member;
 import project.mini.board.member.service.MemberService;
-import project.mini.board.util.Aes256Util;
+import project.mini.board.cipher.Aes256Cipher;
 
 @RequiredArgsConstructor
 @RestController
@@ -64,7 +60,7 @@ public class MemberApiController {
 	}
 
 	private Cookie createLoginMemberCookie(Member member) {
-		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Util.encrypt(AesKey.MEMBER_LOGIN, member.getId()));
+		Cookie cookie = new Cookie(MemberConstant.LOGIN_MEMBER_COOKIE_NAME, Aes256Cipher.encrypt(AesKey.MEMBER_LOGIN, member.getId()));
 		cookie.setHttpOnly(true);
 		cookie.setPath(BASE_PATH);
 		cookie.setMaxAge(MINUTES_30);

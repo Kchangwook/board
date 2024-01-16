@@ -6,12 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.ibatis.type.Alias;
 import project.mini.board.constant.AesKey;
 import project.mini.board.constant.MemberConstant;
-import project.mini.board.util.Aes256Util;
-
-import java.net.URLEncoder;
+import project.mini.board.cipher.Aes256Cipher;
 
 @Alias("member")
 @NoArgsConstructor
@@ -54,9 +53,14 @@ public class Member {
         this.password = password;
     }
 
+    public void setEncryptProfileImageId(String encryptProfileImageId) {
+        String replacedProfileImageId = StringUtils.replace(encryptProfileImageId, "_", "/");
+        this.profileImageId = NumberUtils.toInt(Aes256Cipher.decrypt(AesKey.FILE, replacedProfileImageId), 0);
+    }
+
     public String getEncryptProfileImage() {
         String profileImageId = this.profileImageId <= 0 ? MemberConstant.EMPTY_IMAGE_FILE_ID : String.valueOf(this.profileImageId);
-        String encryptFileId = Aes256Util.encrypt(AesKey.FILE, profileImageId);
+        String encryptFileId = Aes256Cipher.encrypt(AesKey.FILE, profileImageId);
         return StringUtils.replace(encryptFileId, "/", "_");
     }
 }

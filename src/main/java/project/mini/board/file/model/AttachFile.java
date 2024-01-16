@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 import project.mini.board.constant.AesKey;
 import project.mini.board.file.enumeration.FileUsage;
-import project.mini.board.util.Aes256Util;
+import project.mini.board.cipher.Aes256Cipher;
 
 @Alias("file")
 @Setter
@@ -32,6 +32,6 @@ public class AttachFile {
     }
 
     public String getDecryptFileSavePath() {
-        return Aes256Util.decrypt(AesKey.FILE, fileSavePath);
+        return Aes256Cipher.decrypt(AesKey.FILE, fileSavePath);
     }
 }

@@ -11,3 +11,4 @@ server:
 
 file:
   save-base-dir: /Users/kchangwook/Documents/
+  basic-profile-image-path: /Users/kchangwook/IdeaProjects/board/src/main/resources/static/assets/img/avatars/1.png

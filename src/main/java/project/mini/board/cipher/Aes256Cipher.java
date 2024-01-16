@@ -1,4 +1,4 @@
-package project.mini.board.util;
+package project.mini.board.cipher;
 
 import lombok.extern.slf4j.Slf4j;
 import project.mini.board.constant.AesKey;
@@ -12,7 +12,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 @Slf4j
-public class Aes256Util {
+public class Aes256Cipher {
 	private static final String CIPHER_TYPE = "AES/CBC/PKCS5Padding";
 	private static final String ALGORITHM = "AES";
 

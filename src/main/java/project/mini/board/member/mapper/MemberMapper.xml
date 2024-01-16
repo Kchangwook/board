@@ -31,7 +31,7 @@
              , member_pwd AS password
              , member_email AS email
              , member_nick AS nick
-             , ( SELECT file_id FROM file WHERE file_usage_id = member.member_id AND file_usage_type = 'IMAGE' ) AS profileImageId
+             , member_prof_img AS profileImageId
           FROM member
          WHERE member_id = #{memberId}
     </select>
@@ -48,6 +48,9 @@
         </if>
         <if test="@org.apache.commons.lang3.StringUtils@isNotBlank(nick)">
              , member_nick = #{nick}
+        </if>
+        <if test="profileImageId > 0">
+             , member_prof_img = #{profileImageId}
         </if>
          WHERE member_id = #{id}
     </update>

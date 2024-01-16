@@ -49,7 +49,7 @@
           <label for="nick" class="form-label">닉네임</label>
           <input class="form-control" type="text" name="nick" id="nick" th:value="${loginMember.nick}" placeholder="닉네임을 입력하세요" max="20"/>
         </div>
-        <input type="hidden" name="profileImageId" id="selected-image-id">
+        <input type="hidden" name="encryptProfileImageId" id="selected-image-id">
       </div>
       <div class="mt-2">
         <button type="submit" class="btn btn-primary me-2" id="account_update_button">프로필 수정</button>
@@ -99,7 +99,6 @@
           },
           error: function () {
             sweetAlert.errorAlert('회원 정보 수정에 실패했습니다.');
-            location.reload();
           }
         });
       });
@@ -130,4 +129,8 @@
       });
     }
   };
+
+  $(document).ready(function () {
+    updateAccount.bindEvents();
+  });
 </script>

@@ -14,11 +14,9 @@ import project.mini.board.constant.MemberConstant;
 import project.mini.board.file.mapper.FileMapper;
 import project.mini.board.file.model.AttachFile;
 import project.mini.board.member.model.Member;
-import project.mini.board.util.Aes256Util;
+import project.mini.board.cipher.Aes256Cipher;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -59,9 +57,9 @@ public class FileServiceImplTest {
     public void getImageFileDataTest() throws IOException {
         //given
         String fileId = "1";
-        String encryptFileId = Aes256Util.encrypt(AesKey.FILE, fileId);
+        String encryptFileId = Aes256Cipher.encrypt(AesKey.FILE, fileId);
 
-        String encryptFilePath = Aes256Util.encrypt(AesKey.FILE, MemberConstant.BASIC_PROFILE_PATH);
+        String encryptFilePath = Aes256Cipher.encrypt(AesKey.FILE, MemberConstant.BASIC_PROFILE_PATH);
 
         AttachFile attachFile = AttachFile.builder()
                 .fileId(Integer.parseInt(fileId))

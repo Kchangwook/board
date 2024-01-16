@@ -149,46 +149,12 @@
                     </li>
                   </ul>
                   <div id="my_page_content">
-                    <div th:insert="/member/my-page/update-account.html"></div>
                   </div>
                 </div>
               </div>
             </div>
             <!-- / Content -->
-
-            <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  , made with ❤️ by
-                  <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-                </div>
-                <div>
-                  <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                  <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-                  <a
-                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                    target="_blank"
-                    class="footer-link me-4"
-                    >Documentation</a
-                  >
-
-                  <a
-                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                    target="_blank"
-                    class="footer-link me-4"
-                    >Support</a
-                  >
-                </div>
-              </div>
-            </footer>
-            <!-- / Footer -->
-
+            <th:block th:insert="/common/footer.html"></th:block>
             <div class="content-backdrop fade"></div>
           </div>
           <!-- Content wrapper -->
@@ -199,7 +165,7 @@
       <!-- Overlay -->
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    <th:block th:insert="/common/footer.html"></th:block>
+    <th:block th:insert="/common/scripts.html"></th:block>
   <script>
     $(document).ready(function () {
       myPage.init();
@@ -208,8 +174,8 @@
     const myPage = {
       init() {
         myPage.bindMyPageLinkClickEvent();
-        updateAccount.bindEvents();
         myPage.bindUpdatePasswordButtonClickEvent();
+        myPage.getContentPage('account');
       },
       bindMyPageLinkClickEvent() {
         $(document).on('click', '.my-page-link', function (event) {
@@ -227,26 +193,6 @@
           success: function (view) {
             $('#my_page_content').html(view);
           }
-        });
-      },
-      bindUpdatePasswordButtonClickEvent() {
-        $(document).on('click', '#update_password_button', function () {
-          if ($('#member_password').val() !== $('#member_password_confirm').val()) {
-            sweetAlert.errorAlert('비밀번호를 체크해주세요.');
-            return;
-          }
-
-          $.ajax({
-            type: 'put',
-            url: '/api/member/password',
-            data: $('#update_password_form').serialize(),
-            success: function () {
-              sweetAlert.successAlert('비밀번호가 수정되었습니다.');
-            },
-            error: function () {
-              sweetAlert.errorAlert('비밀번호 수정에 실패했습니다.');
-            }
-          });
         });
       }
     };

@@ -1,14 +1,11 @@
 package project.mini.board.member.resolver;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -21,9 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import project.mini.board.constant.AesKey;
 import project.mini.board.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
-import project.mini.board.member.model.Member;
 import project.mini.board.member.service.MemberService;
-import project.mini.board.util.Aes256Util;
+import project.mini.board.cipher.Aes256Cipher;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,7 +46,7 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 			throw new IllegalAccessException();
 		}
 
-		String loginMemberId = Aes256Util.decrypt(AesKey.MEMBER_LOGIN, encryptedMember);
+		String loginMemberId = Aes256Cipher.decrypt(AesKey.MEMBER_LOGIN, encryptedMember);
 		return memberService.getMemberById(loginMemberId);
 	}
 }
