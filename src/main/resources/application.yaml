@@ -4,11 +4,11 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3306/board?useSSL=false&allowPublicKeyRetrieval=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
-      password: 1234
+      password: 1q2w3e4r
 
 server:
   port: 80
 
-aes256:
-  encrypt-key:
-    member-login: projectminiboardmemberloginkey!@
+file:
+  save-base-dir: /Users/kchangwook/Documents/
+  basic-profile-image-path: /Users/kchangwook/IdeaProjects/board/src/main/resources/static/assets/img/avatars/1.png

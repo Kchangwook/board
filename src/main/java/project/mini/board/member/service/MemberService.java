@@ -6,4 +6,8 @@ public interface MemberService {
 	void addMember(Member member);
 
 	Member getMemberById(String memberId);
+
+	void modifyMember(Member member);
+
+	boolean modifyMemberPassword(Member member);
 }

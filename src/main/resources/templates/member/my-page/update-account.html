@@ -1,0 +1,136 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="d-flex align-items-start align-items-sm-center gap-4">
+      <img
+              th:src="|/api/file/image/${loginMember.encryptProfileImage}|"
+              alt="user-avatar"
+              class="d-block rounded"
+              height="100"
+              width="100"
+              id="profile_image"
+      />
+      <div class="button-wrapper">
+        <label for="upload_profile_input" class="btn btn-primary me-2 mb-4" tabindex="0">
+          <span class="d-none d-sm-block">프로필 이미지 수정</span>
+          <i class="bx bx-upload d-block d-sm-none"></i>
+          <input
+                  type="file"
+                  id="upload_profile_input"
+                  class="account-file-input"
+                  hidden
+                  accept="image/png, image/jpeg"
+          />
+          <input type="hidden" id="original-profile-image" th:value="${loginMember.encryptProfileImage}">
+        </label>
+        <button id="profile-image-reset" type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+          <i class="bx bx-reset d-block d-sm-none"></i>
+          <span class="d-none d-sm-block">Reset</span>
+        </button>
+        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+      </div>
+    </div>
+  </div>
+  <hr class="my-0" />
+  <div class="card-body">
+    <form id="update_account_form" method="POST" onsubmit="return false">
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="email" class="form-label">이메일</label>
+          <input
+                  class="form-control"
+                  type="text"
+                  id="email"
+                  name="email"
+                  th:value="${loginMember.email}"
+                  placeholder="john.doe@example.com"
+          />
+        </div>
+        <div class="mb-3 col-md-6">
+          <label for="nick" class="form-label">닉네임</label>
+          <input class="form-control" type="text" name="nick" id="nick" th:value="${loginMember.nick}" placeholder="닉네임을 입력하세요" max="20"/>
+        </div>
+        <input type="hidden" name="encryptProfileImageId" id="selected-image-id">
+      </div>
+      <div class="mt-2">
+        <button type="submit" class="btn btn-primary me-2" id="account_update_button">프로필 수정</button>
+        <button type="reset" class="btn btn-outline-secondary">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="card">
+  <h5 class="card-header">계정 삭제</h5>
+  <div class="card-body">
+    <div class="mb-3 col-12 mb-0">
+      <div class="alert alert-warning">
+        <h6 class="alert-heading fw-bold mb-1">계정 삭제를 원하십니까?</h6>
+        <p class="mb-0">계정을 삭제하고 난 이후에는 복구할 수 없습니다.</p>
+      </div>
+    </div>
+    <form id="formAccountDeactivation" onsubmit="return false">
+      <div class="form-check mb-3">
+        <input
+                class="form-check-input"
+                type="checkbox"
+                name="accountActivation"
+                id="accountActivation"
+        />
+        <label class="form-check-label" for="accountActivation">나는 계정 삭제 조항을 확인했습니다.</label>
+      </div>
+      <button type="submit" class="btn btn-danger deactivate-account">계정 삭제</button>
+    </form>
+  </div>
+</div>
+<script>
+  const updateAccount = {
+    bindEvents () {
+      updateAccount.bindUpdateAccountButtonClickEvent();
+      updateAccount.bindProfileImageChangeEvent();
+      updateAccount.bindProfileImageResetClickEvent();
+    },
+    bindUpdateAccountButtonClickEvent() {
+      $(document).on('click', '#account_update_button', function () {
+        $.ajax({
+          type: 'put',
+          url: '/api/member',
+          data: $('#update_account_form').serialize(),
+          success: function () {
+            sweetAlert.successAlert('회원 정보가 수정되었습니다.');
+          },
+          error: function () {
+            sweetAlert.errorAlert('회원 정보 수정에 실패했습니다.');
+          }
+        });
+      });
+    },
+    bindProfileImageChangeEvent() {
+      $(document).on('change', '#upload_profile_input', function() {
+        const formData = new FormData();
+        formData.append('attachFile', $('#upload_profile_input')[0].files[0]);
+
+        $.ajax({
+          type: 'post',
+          url: '/api/file',
+          processData: false,
+          contentType: false,
+          data: formData,
+          success: function (encryptImageFileId) {
+            $('#profile_image').attr('src', `/api/file/image/${encryptImageFileId}`);
+            $('#selected-image-id').val(encryptImageFileId);
+          }
+        });
+      });
+    },
+    bindProfileImageResetClickEvent() {
+      $(document).on('click', '#profile-image-reset', function () {
+        const originalImageFileId = $('#original-profile-image').val();
+        $('#profile_image').attr('src', `/api/file/image/${originalImageFileId}`);
+        $('#selected-image-id').val(originalImageFileId);
+      });
+    }
+  };
+
+  $(document).ready(function () {
+    updateAccount.bindEvents();
+  });
+</script>

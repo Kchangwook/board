@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="project.mini.board.file.mapper.FileMapper">
+    <insert id="insertAttachFile" parameterType="map">
+        INSERT INTO file
+        (
+          file_name
+        , file_ext
+        , file_save_path
+        , reg_member
+        , reg_date
+        , mod_member
+        , mod_date
+        )
+        VALUES
+        (
+          #{attachFile.fileName}
+        , #{attachFile.fileExtension}
+        , #{attachFile.fileSavePath}
+        , #{loginMember.id}
+        , NOW()
+        , #{loginMember.id}
+        , NOW()
+        )
+        <selectKey order="AFTER" keyProperty="attachFile.fileId" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="selectAttachFile" parameterType="int" resultType="file">
+        SELECT file_id AS fileId
+             , file_save_path AS fileSavePath
+          FROM file
+         WHERE file_id = #{fileId}
+    </select>
+</mapper>
