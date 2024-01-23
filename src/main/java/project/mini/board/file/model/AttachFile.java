@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
-import project.mini.board.constant.AesKey;
+import project.mini.board.cipher.enumeration.AesKey;
 import project.mini.board.file.enumeration.FileUsage;
-import project.mini.board.cipher.Aes256Cipher;
+import project.mini.board.cipher.util.Aes256Cipher;
 
 @Alias("file")
 @Setter

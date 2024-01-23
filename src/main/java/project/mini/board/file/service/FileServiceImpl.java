@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import project.mini.board.constant.AesKey;
-import project.mini.board.constant.MemberConstant;
+import project.mini.board.cipher.enumeration.AesKey;
+import project.mini.board.member.constant.MemberConstant;
 import project.mini.board.file.mapper.FileMapper;
 import project.mini.board.file.model.AttachFile;
 import project.mini.board.member.model.Member;
-import project.mini.board.cipher.Aes256Cipher;
+import project.mini.board.cipher.util.Aes256Cipher;
 
 import java.io.File;
 import java.io.FileInputStream;

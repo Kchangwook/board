@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import project.mini.board.constant.MemberConstant;
+import project.mini.board.member.constant.MemberConstant;
 
 @Component
 public class LoginCheckInterceptor implements HandlerInterceptor {

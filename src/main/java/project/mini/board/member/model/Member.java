@@ -8,9 +8,9 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.ibatis.type.Alias;
-import project.mini.board.constant.AesKey;
-import project.mini.board.constant.MemberConstant;
-import project.mini.board.cipher.Aes256Cipher;
+import project.mini.board.cipher.enumeration.AesKey;
+import project.mini.board.member.constant.MemberConstant;
+import project.mini.board.cipher.util.Aes256Cipher;
 
 @Alias("member")
 @NoArgsConstructor

@@ -15,11 +15,11 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import project.mini.board.constant.AesKey;
-import project.mini.board.constant.MemberConstant;
+import project.mini.board.cipher.enumeration.AesKey;
+import project.mini.board.member.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.service.MemberService;
-import project.mini.board.cipher.Aes256Cipher;
+import project.mini.board.cipher.util.Aes256Cipher;
 
 @Slf4j
 @RequiredArgsConstructor
