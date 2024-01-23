@@ -1,4 +1,4 @@
-package project.mini.board.constant;
+package project.mini.board.member.constant;
 
 public class MemberConstant {
 	public static final String LOGIN_MEMBER_COOKIE_NAME = "loginMember";

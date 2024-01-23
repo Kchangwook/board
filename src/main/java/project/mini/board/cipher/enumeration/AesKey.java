@@ -1,4 +1,4 @@
-package project.mini.board.constant;
+package project.mini.board.cipher.enumeration;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

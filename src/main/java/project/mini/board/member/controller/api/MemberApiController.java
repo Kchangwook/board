@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import project.mini.board.constant.AesKey;
-import project.mini.board.constant.MemberConstant;
+import project.mini.board.cipher.enumeration.AesKey;
+import project.mini.board.member.constant.MemberConstant;
 import project.mini.board.member.annotation.LoginMember;
 import project.mini.board.member.model.Member;
 import project.mini.board.member.service.MemberService;
-import project.mini.board.cipher.Aes256Cipher;
+import project.mini.board.cipher.util.Aes256Cipher;
 
 @RequiredArgsConstructor
 @RestController
