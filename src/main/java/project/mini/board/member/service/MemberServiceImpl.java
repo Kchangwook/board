@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import project.mini.board.file.enumeration.FileUsage;
+import project.mini.board.file.model.AttachFile;
+import project.mini.board.file.service.FileService;
 import project.mini.board.member.mapper.MemberMapper;
 import project.mini.board.member.model.Member;
 
@@ -13,6 +16,7 @@ import project.mini.board.member.model.Member;
 public class MemberServiceImpl implements MemberService {
 	private final MemberMapper memberMapper;
 	private final MemberHistoryService memberHistoryService;
+	private final FileService fileService;
 
 	@Override
 	public void addMember(Member member) {
@@ -32,6 +36,16 @@ public class MemberServiceImpl implements MemberService {
 	public void modifyMember(Member member) {
 		memberMapper.updateMember(member);
 		memberHistoryService.addMemberHistory(member);
+
+		if (member.getProfileImageId() != 0) {
+			AttachFile memberProfileFile = AttachFile.builder()
+					.fileId(member.getProfileImageId())
+					.fileUsageId(member.getId())
+					.fileUsage(FileUsage.MEMBER_PROFILE)
+					.build();
+
+			fileService.addAttachFileUsage(memberProfileFile);
+		}
 	}
 
 	@Override

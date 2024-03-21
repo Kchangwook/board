@@ -18,11 +18,11 @@ public class AttachFile {
     private String fileName;
     private String fileExtension;
     private FileUsage fileUsage;
-    private int fileUsageId;
+    private String fileUsageId;
     private String fileSavePath;
 
     @Builder
-    public AttachFile(int fileId, String fileName, String fileExtension, FileUsage fileUsage, int fileUsageId, String fileSavePath) {
+    public AttachFile(int fileId, String fileName, String fileExtension, FileUsage fileUsage, String fileUsageId, String fileSavePath) {
         this.fileId = fileId;
         this.fileName = fileName;
         this.fileExtension = fileExtension;

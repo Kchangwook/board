@@ -8,5 +8,7 @@ import project.mini.board.member.model.Member;
 public interface FileMapper {
     void insertAttachFile(AttachFile attachFile, Member loginMember);
 
+    void updateAttachFileUsage(AttachFile attachFile);
+
     AttachFile selectAttachFile(int fileId);
 }

@@ -60,6 +60,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public void addAttachFileUsage(AttachFile attachFile) {
+        fileMapper.updateAttachFileUsage(attachFile);
+    }
+
+    @Override
     public byte[] getImageFileData(String encryptFileId) throws IOException {
         String fileId = Aes256Cipher.decrypt(AesKey.FILE, encryptFileId);
         String fileSavePath = basicProfileImagePath;

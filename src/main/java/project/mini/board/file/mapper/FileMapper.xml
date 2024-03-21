@@ -27,6 +27,13 @@
         </selectKey>
     </insert>
 
+    <update id="updateAttachFileUsage" parameterType="file">
+        UPDATE file
+           SET file_usage_id = #{fileUsageId}
+             , file_usage_type = #{fileUsage}
+         WHERE file_id = #{fileId}
+    </update>
+
     <select id="selectAttachFile" parameterType="int" resultType="file">
         SELECT file_id AS fileId
              , file_save_path AS fileSavePath
